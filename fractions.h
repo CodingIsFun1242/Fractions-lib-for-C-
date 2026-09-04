@@ -1,12 +1,16 @@
 /*fractions.h */
 /*
- * Copyright (C) 2026 王家祺(Jacky Velarde Z.) <3594929067@qq.com>
+ * Copyright ©2026 王家祺(Jacky Velarde Z.) <3594929067@qq.com>
  *
  * This file is released under the GPLv2 (or later, at your option).
+ *  
+ * All Rights Reserved.
+ * 
  */
 
 #ifndef FRACTIONS_H
 #define FRACTIONS_H
+using type = int; //Change int to whatever you need
 
 
 #include <cstdlib>
@@ -37,13 +41,14 @@ inline static int Decimal_count(double in) {
 	if (end == std::string::npos || s[end] == '.') return 0;
 	return static_cast<int>(end - pos);
 }
-namespace mfc{ //mfc, aka.Math for C++.
+
+namespace mfc { //mfc, aka.Math for C++.
 	class fraction {
 	private:
-		int num = 0;//numerator
-		int den = 1;//denominator
+		type num = 0;//numerator
+		type den = 1;//denominator
 	public:
-		fraction(int n, int d) : num(n), den(d) { 
+		fraction(type n, type d) : num(n), den(d) {
 			if (d == 0) {
 				throw std::invalid_argument("Denominator cannot be zero");
 			}
@@ -53,7 +58,7 @@ namespace mfc{ //mfc, aka.Math for C++.
 			}
 		}
 		fraction() : num(0), den(1) {}
-		fraction(int n) : num(n), den(1) {}
+		fraction(type n) : num(n), den(1) {}
 		fraction(double n) : num(0), den(1)
 		{
 			fraction temp1(n * std::pow(10, Decimal_count(n)), std::pow(10, Decimal_count(n)));
@@ -61,7 +66,7 @@ namespace mfc{ //mfc, aka.Math for C++.
 			num = temp1.num;
 			den = temp1.den;
 		}
-		double solve() const; 
+		double solve() const;
 		float sm_solve() const;
 		long double large_solve() const;
 		fraction pow_int(int a) const;
@@ -70,7 +75,7 @@ namespace mfc{ //mfc, aka.Math for C++.
 		fraction rtrn_abs() const; //This returns the result instead of modifying the fraction itself.
 		fraction simplify() const
 		{
-			int g = gcd(std::abs(num), std::abs(den));
+			type g = gcd(std::abs(num), std::abs(den));
 			return fraction(num / g, den / g);
 		}
 		void swap(fraction& other) noexcept
@@ -90,12 +95,12 @@ namespace mfc{ //mfc, aka.Math for C++.
 		}
 		fraction operator + (const fraction& other) const noexcept
 		{
-			int lcm = den / gcd(den, other.den) * other.den;
-			int new_num = num * (lcm / den) + other.num * (lcm / other.den);
+			type lcm = den / gcd(den, other.den) * other.den;
+			type new_num = num * (lcm / den) + other.num * (lcm / other.den);
 			fraction result(new_num, lcm);
 			return result.simplify();
 		}
-		fraction operator + (const int& other) const noexcept
+		fraction operator + (const type& other) const noexcept
 		{
 			fraction result(num + other * den, den);
 			return result.simplify();
@@ -113,7 +118,7 @@ namespace mfc{ //mfc, aka.Math for C++.
 			fraction result(new_num, lcm);
 			return result.simplify();
 		}
-		fraction operator - (const int& other) const noexcept
+		fraction operator - (const type& other) const noexcept
 		{
 			fraction result(num - other * den, den);
 			return result.simplify();
@@ -121,31 +126,31 @@ namespace mfc{ //mfc, aka.Math for C++.
 		fraction operator - (const double& other) const noexcept
 		{
 			fraction temp(other);
-			fraction temp2(this->num * temp.den - temp.num * this->den,this->den * temp.den);
+			fraction temp2(this->num * temp.den - temp.num * this->den, this->den * temp.den);
 			return temp2.simplify();
 		}
-		fraction operator * (const fraction& other) const 
+		fraction operator * (const fraction& other) const
 		{
 			fraction result(num * other.num, den * other.den);
 			return result.simplify();
 		}
-		fraction operator * (const int& other) const 
+		fraction operator * (const type& other) const
 		{
 			fraction result(num * other, den);
 			return result.simplify();
 		}
-		fraction operator * (const double& other) const 
+		fraction operator * (const double& other) const
 		{
 			fraction temp(other);
 			fraction temp2(this->num * temp.num, this->den * temp.den);
 			return temp2.simplify();
 		}
-		fraction operator / (const fraction& other) const 
+		fraction operator / (const fraction& other) const
 		{
 			fraction result(num * other.den, den * other.num);
 			return result.simplify();
 		}
-		fraction operator / (const int& other) const 
+		fraction operator / (const type& other) const
 		{
 			if (other == 0)
 			{
@@ -190,7 +195,7 @@ namespace mfc{ //mfc, aka.Math for C++.
 			num -= den;
 			return temp;
 		}
-	
+
 		friend std::ostream& operator<<(std::ostream& os, const fraction& a) noexcept
 		{
 			os << a.num << "/" << a.den;
@@ -254,23 +259,23 @@ namespace mfc{ //mfc, aka.Math for C++.
 				return (this->num % this->den) * other.den >= (other.num % other.den) * this->den;
 			}
 		}
-		bool operator < (const int& other) const noexcept
+		bool operator < (const type& other) const noexcept
 		{
 			return this->sm_solve() < other;
 		}
-		bool operator != (const int& other) const noexcept
+		bool operator != (const type& other) const noexcept
 		{
 			return this->sm_solve() != other;
 		}
-		bool operator <= (const int& other) const noexcept
+		bool operator <= (const type& other) const noexcept
 		{
 			return this->sm_solve() <= other;
 		}
-		bool operator > (const int& other) const noexcept
+		bool operator > (const type& other) const noexcept
 		{
 			return this->sm_solve() > other;
 		}
-		bool operator >= (const int& other) const noexcept
+		bool operator >= (const type& other) const noexcept
 		{
 			return this->sm_solve() >= other;
 		}
@@ -334,7 +339,7 @@ namespace mfc{ //mfc, aka.Math for C++.
 				return (this->num % this->den) * other.den == (other.num % other.den) * this->den;
 			}
 		}
-		bool operator == (const int& other) const noexcept
+		bool operator == (const type& other) const noexcept
 		{
 			return this->sm_solve() == other;
 		}
@@ -361,14 +366,16 @@ namespace mfc{ //mfc, aka.Math for C++.
 	{
 		return static_cast<long double>(num) / den;
 	}
-	bool compare(fraction one, fraction two)//This fraction is useless, but I still kept it. Don't ask why.
-	{
-		return one.sm_solve() > two.sm_solve();
-	}
 	fraction fraction::rec() const
 	{
-		fraction temp(den, num);
-		return temp.simplify();
+		if (num == 0)
+		{
+			throw std::invalid_argument("Denominator cannot be zero");
+		}
+		else {
+			fraction temp(den, num);
+			return temp.simplify();
+		}
 	}
 	fraction fraction::pow_int(int a) const
 	{
@@ -409,8 +416,12 @@ namespace mfc{ //mfc, aka.Math for C++.
 			return temp2;
 		}
 	}
+	const fraction f(type a, type b) noexcept//Easier Fraction Maker
+	{
+		return fraction(a, b);
+	}
 }
-	#endif
+#endif
 
 
 //===========================================================================
@@ -422,10 +433,13 @@ namespace mfc{ //mfc, aka.Math for C++.
 //8/22/2026，Added some stuff and fixed bugs
 //8/23/2026，Addded useful functions like pow_int
 //8/26/2026,Optimized the algorithm.
+//8/31/2026 Added using type = int;
+//9/4/2026 Added some functions and removed useless stuff(Compare function).
 
-// Verision: 1.0.0
+// Verision: 2.0.0
 // Welcome to apply to Xiamen No.6 High School
 // If there are any problems with my code, feel free to email me at: 3594929067@qq.com
 // I will reply if im not in school
 //=============================================================================
+
 
