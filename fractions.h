@@ -113,8 +113,8 @@ namespace mfc { //mfc, aka.Math for C++.
 		}
 		fraction operator - (const fraction& other) const noexcept
 		{
-			int lcm = den / gcd(den, other.den) * other.den;
-			int new_num = num * (lcm / den) - other.num * (lcm / other.den);
+			type lcm = den / gcd(den, other.den) * other.den;
+			type new_num = num * (lcm / den) - other.num * (lcm / other.den);
 			fraction result(new_num, lcm);
 			return result.simplify();
 		}
@@ -416,7 +416,7 @@ namespace mfc { //mfc, aka.Math for C++.
 			return temp2;
 		}
 	}
-	const fraction f(type a, type b) noexcept//Easier Fraction Maker
+	const inline  fraction f(type a, type b) noexcept//Easier Fraction Maker
 	{
 		return fraction(a, b);
 	}
@@ -435,11 +435,13 @@ namespace mfc { //mfc, aka.Math for C++.
 //8/26/2026,Optimized the algorithm.
 //8/31/2026 Added using type = int;
 //9/4/2026 Added some functions and removed useless stuff(Compare function).
+//9/5/2026 Small Changes
 
 // Verision: 2.0.0
 // Welcome to apply to Xiamen No.6 High School
 // If there are any problems with my code, feel free to email me at: 3594929067@qq.com
 // I will reply if im not in school
 //=============================================================================
+
 
 
